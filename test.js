@@ -2,6 +2,7 @@ var tape = require('tape')
 var through = require('through2')
 var concat = require('concat-stream')
 var from = require('from2')
+var { pipeline, Writable } = require('readable-stream')
 var lpstream = require('./')
 
 var chunk = function (ultra) {
@@ -264,4 +265,56 @@ tape('allow empty', function (t) {
 
   d.write(Buffer.from([0]))
   d.end()
+})
+
+tape('emits close', function (t) {
+  t.plan(3)
+
+  var d = lpstream.decode()
+  var e = lpstream.encode()
+
+  d.on('close', function () {
+    t.pass('decode closed')
+  })
+
+  e.on('close', function () {
+    t.pass('encode closed')
+  })
+
+  d.on('data', function () {
+    t.pass('got data')
+  })
+
+  e.pipe(d)
+  e.write(Buffer.from([1]))
+  e.end()
+})
+
+tape('pipeline() waits for close', function (t) {
+  t.plan(2)
+
+  var d = lpstream.decode()
+  var e = lpstream.encode()
+  var w = new Writable({ write (chunk, enc, cb) { cb() } })
+  var closes = 0
+
+  // Demonstrates gap in stream's willEmitClose() logic
+  // d._destroy = e._destroy = function (err, cb) {
+  //   setTimeout(cb, 100)
+  // }
+
+  function onclose () {
+    closes++
+  }
+
+  d.on('close', onclose)
+  e.on('close', onclose)
+
+  pipeline(e, d, w, function (err) {
+    t.ifError(err, 'no pipeline() error')
+    t.is(closes, 2, 'was closed')
+  })
+
+  e.write(Buffer.from([1]))
+  e.end()
 })
