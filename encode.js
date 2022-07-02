@@ -1,11 +1,11 @@
-var varint = require('varint')
-var stream = require('readable-stream')
-var inherits = require('inherits')
+const varint = require('varint')
+const stream = require('readable-stream')
+const inherits = require('inherits')
 
-var pool = Buffer.allocUnsafe(10 * 1024)
-var used = 0
+let pool = Buffer.allocUnsafe(10 * 1024)
+let used = 0
 
-var Encoder = function () {
+const Encoder = function () {
   if (!(this instanceof Encoder)) return new Encoder()
   stream.Transform.call(this)
 }

@@ -1,6 +1,6 @@
-var { encode } = require('.')
+const { encode } = require('.')
 
-var encoder = encode()
+const encoder = encode()
 encoder.on('data', function (data) {
   process.stdout.write(data.toString('hex'))
 })

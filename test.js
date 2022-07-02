@@ -1,13 +1,13 @@
-var tape = require('tape')
-var concat = require('concat-stream')
-var { pipeline, Writable, Transform, Readable } = require('readable-stream')
-var lpstream = require('./')
+const tape = require('tape')
+const concat = require('concat-stream')
+const { pipeline, Writable, Transform, Readable } = require('readable-stream')
+const lpstream = require('./')
 
-var chunk = function (ultra) {
+const chunk = function (ultra) {
   return new Transform({
     transform (data, enc, cb) {
       while (data.length) {
-        var chunk = data.slice(0, ultra ? 1 : 1 + ((Math.random() * data.length) | 0))
+        const chunk = data.slice(0, ultra ? 1 : 1 + ((Math.random() * data.length) | 0))
         this.push(chunk)
         data = data.slice(chunk.length)
       }
@@ -17,8 +17,8 @@ var chunk = function (ultra) {
 }
 
 tape('encode -> decode', function (t) {
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
   d.on('data', function (data) {
     t.same(data.toString(), 'hello world')
@@ -30,8 +30,8 @@ tape('encode -> decode', function (t) {
 })
 
 tape('buffered encode -> buffered decode', function (t) {
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
   d.on('data', function (data) {
     t.same(data.toString(), 'hello world')
@@ -49,10 +49,10 @@ tape('buffered encode -> buffered decode', function (t) {
 tape('encode -> decode twice', function (t) {
   t.plan(2)
 
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
-  var expects = ['hello world', 'hola mundo']
+  const expects = ['hello world', 'hola mundo']
 
   d.on('data', function (data) {
     t.same(data.toString(), expects.shift())
@@ -66,11 +66,11 @@ tape('encode -> decode twice', function (t) {
 tape('encode -> decode storm', function (t) {
   t.plan(50)
 
-  var e = lpstream.encode()
-  var d = lpstream.decode()
-  var expects = []
+  const e = lpstream.encode()
+  const d = lpstream.decode()
+  const expects = []
 
-  for (var i = 0; i < 50; i++) {
+  for (let i = 0; i < 50; i++) {
     expects.push(Buffer.allocUnsafe(50))
   }
 
@@ -86,8 +86,8 @@ tape('encode -> decode storm', function (t) {
 })
 
 tape('chunked encode -> decode', function (t) {
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
   d.on('data', function (data) {
     t.same(data.toString(), 'hello world')
@@ -101,10 +101,10 @@ tape('chunked encode -> decode', function (t) {
 tape('chunked encode -> decode twice', function (t) {
   t.plan(2)
 
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
-  var expects = ['hello world', 'hola mundo']
+  const expects = ['hello world', 'hola mundo']
 
   d.on('data', function (data) {
     t.same(data.toString(), expects.shift())
@@ -118,11 +118,11 @@ tape('chunked encode -> decode twice', function (t) {
 tape('chunked encode -> decode storm', function (t) {
   t.plan(50)
 
-  var e = lpstream.encode()
-  var d = lpstream.decode()
-  var expects = []
+  const e = lpstream.encode()
+  const d = lpstream.decode()
+  const expects = []
 
-  for (var i = 0; i < 50; i++) {
+  for (let i = 0; i < 50; i++) {
     expects.push(Buffer.allocUnsafe(50))
   }
 
@@ -138,8 +138,8 @@ tape('chunked encode -> decode storm', function (t) {
 })
 
 tape('ultra chunked encode -> decode', function (t) {
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
   d.on('data', function (data) {
     t.same(data.toString(), 'hello world')
@@ -153,10 +153,10 @@ tape('ultra chunked encode -> decode', function (t) {
 tape('ultra chunked encode -> decode twice', function (t) {
   t.plan(2)
 
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
-  var expects = ['hello world', 'hola mundo']
+  const expects = ['hello world', 'hola mundo']
 
   d.on('data', function (data) {
     t.same(data.toString(), expects.shift())
@@ -170,11 +170,11 @@ tape('ultra chunked encode -> decode twice', function (t) {
 tape('ultra chunked encode -> decode storm', function (t) {
   t.plan(50)
 
-  var e = lpstream.encode()
-  var d = lpstream.decode()
-  var expects = []
+  const e = lpstream.encode()
+  const d = lpstream.decode()
+  const expects = []
 
-  for (var i = 0; i < 50; i++) {
+  for (let i = 0; i < 50; i++) {
     expects.push(Buffer.allocUnsafe(50))
   }
 
@@ -192,11 +192,11 @@ tape('ultra chunked encode -> decode storm', function (t) {
 tape('multibyte varints', function (t) {
   t.plan(5)
 
-  var e = lpstream.encode()
-  var d = lpstream.decode()
-  var expects = []
+  const e = lpstream.encode()
+  const d = lpstream.decode()
+  const expects = []
 
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     expects.push(Buffer.allocUnsafe(64 * 1024))
   }
 
@@ -214,10 +214,10 @@ tape('multibyte varints', function (t) {
 tape('overflow varint pool', function (t) {
   t.plan(4000)
 
-  var i = 0
-  var buf = Buffer.allocUnsafe(64 * 1024)
-  var e = lpstream.encode()
-  var d = lpstream.decode()
+  let i = 0
+  const buf = Buffer.allocUnsafe(64 * 1024)
+  const e = lpstream.encode()
+  const d = lpstream.decode()
 
   d.on('data', function (data) {
     t.same(buf, data)
@@ -226,7 +226,7 @@ tape('overflow varint pool', function (t) {
   new Readable({ read }).pipe(e).pipe(d)
 
   // needed to not blow up in 0.10 :/
-  var nextTick = global.setImmediate || process.nextTick
+  const nextTick = global.setImmediate || process.nextTick
 
   function read (size) {
     nextTick(() => {
@@ -237,7 +237,7 @@ tape('overflow varint pool', function (t) {
 })
 
 tape('message limit', function (t) {
-  var d = lpstream.decode({ limit: 10 })
+  const d = lpstream.decode({ limit: 10 })
 
   d.on('error', function (err) {
     t.ok(err, 'should error')
@@ -248,7 +248,7 @@ tape('message limit', function (t) {
 })
 
 tape('allow empty', function (t) {
-  var d = lpstream.decode()
+  let d = lpstream.decode()
 
   d.on('data', function () {
     t.fail('should not emit empty buffers')
@@ -270,8 +270,8 @@ tape('allow empty', function (t) {
 tape('emits close', function (t) {
   t.plan(3)
 
-  var d = lpstream.decode()
-  var e = lpstream.encode()
+  const d = lpstream.decode()
+  const e = lpstream.encode()
 
   d.on('close', function () {
     t.pass('decode closed')
@@ -293,10 +293,10 @@ tape('emits close', function (t) {
 tape('pipeline() waits for close', function (t) {
   t.plan(2)
 
-  var d = lpstream.decode()
-  var e = lpstream.encode()
-  var w = new Writable({ write (chunk, enc, cb) { cb() } })
-  var closes = 0
+  const d = lpstream.decode()
+  const e = lpstream.encode()
+  const w = new Writable({ write (chunk, enc, cb) { cb() } })
+  let closes = 0
 
   // Demonstrates gap in stream's willEmitClose() logic
   // d._destroy = e._destroy = function (err, cb) {

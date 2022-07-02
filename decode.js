@@ -1,8 +1,8 @@
-var varint = require('varint')
-var stream = require('readable-stream')
-var inherits = require('inherits')
+const varint = require('varint')
+const stream = require('readable-stream')
+const inherits = require('inherits')
 
-var Decoder = function (opts) {
+const Decoder = function (opts) {
   if (!(this instanceof Decoder)) return new Decoder(opts)
   stream.Transform.call(this)
 
@@ -49,8 +49,8 @@ Decoder.prototype._prefixError = function (data) {
 }
 
 Decoder.prototype._parseMessage = function (data, offset) {
-  var free = data.length - offset
-  var missing = this._missing
+  const free = data.length - offset
+  const missing = this._missing
 
   if (!this._message) {
     if (missing <= free) { // fast track - no copy
@@ -75,7 +75,7 @@ Decoder.prototype._parseMessage = function (data, offset) {
 }
 
 Decoder.prototype._transform = function (data, enc, cb) {
-  var offset = 0
+  let offset = 0
 
   while (!this.destroyed && offset < data.length) {
     if (this._missing) offset = this._parseMessage(data, offset)

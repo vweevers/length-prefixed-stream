@@ -11,11 +11,11 @@ npm install length-prefixed-stream
 
 ## Usage
 
-``` js
-var lpstream = require('length-prefixed-stream')
+```js
+const lpstream = require('length-prefixed-stream')
 
-var encode = lpstream.encode() // create an encode stream to send data
-var decode = lpstream.decode() // create an decode stream to receive data
+const encode = lpstream.encode() // create an encode stream to send data
+const decode = lpstream.decode() // create an decode stream to receive data
 
 encode.write('hello world') // send "hello world"
 
