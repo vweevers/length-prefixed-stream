@@ -1,7 +1,6 @@
 var tape = require('tape')
 var concat = require('concat-stream')
-var from = require('from2')
-var { pipeline, Writable, Transform } = require('readable-stream')
+var { pipeline, Writable, Transform, Readable } = require('readable-stream')
 var lpstream = require('./')
 
 var chunk = function (ultra) {
@@ -224,15 +223,15 @@ tape('overflow varint pool', function (t) {
     t.same(buf, data)
   })
 
-  from(read).pipe(e).pipe(d)
+  new Readable({ read }).pipe(e).pipe(d)
 
   // needed to not blow up in 0.10 :/
   var nextTick = global.setImmediate || process.nextTick
 
-  function read (size, cb) {
-    nextTick(function () {
-      if (i++ < 4000) return cb(null, buf)
-      cb(null, null)
+  function read (size) {
+    nextTick(() => {
+      if (i++ < 4000) return this.push(buf)
+      this.push(null)
     })
   }
 })
