@@ -1,18 +1,24 @@
 # length-prefixed-stream
 
-Streaming equivalent of [length-prefixed-message](https://github.com/sorribas/length-prefixed-message).
-This module allow you to send `Buffer`s with a varint length prefix to ensure that they will arrive unpartioned
+**Streaming equivalent of [`length-prefixed-message`](https://github.com/sorribas/length-prefixed-message). This module allow you to send Buffers with a varint length prefix to ensure that they will arrive unpartioned.** A fork of [`mafintosh/length-prefixed-stream`](https://github.com/mafintosh/length-prefixed-stream) (2.0.0) that upgraded `readable-stream` from 3 to 4.
+
+[![npm](https://img.shields.io/npm/v/@vweevers/length-prefixed-stream.svg)](https://www.npmjs.com/package/length-prefixed-stream)
+[![Node version](https://img.shields.io/node/v/@vweevers/length-prefixed-stream.svg)](https://www.npmjs.com/package/length-prefixed-stream)
+[![Test](https://img.shields.io/github/workflow/status/vweevers/length-prefixed-stream/Test?label=test)](https://github.com/vweevers/length-prefixed-stream/actions/workflows/test.yml)
+[![Standard](https://img.shields.io/badge/standard-informational?logo=javascript\&logoColor=fff)](https://standardjs.com)
+
+## Install
+
+With [npm](https://npmjs.org) do:
 
 ```
-npm install length-prefixed-stream
+npm i @vweevers/length-prefixed-stream
 ```
-
-[![build status](https://travis-ci.org/mafintosh/length-prefixed-stream.svg?branch=master)](https://travis-ci.org/mafintosh/length-prefixed-stream)
 
 ## Usage
 
 ```js
-const lpstream = require('length-prefixed-stream')
+const lpstream = require('@vweevers/length-prefixed-stream')
 
 const encode = lpstream.encode() // create an encode stream to send data
 const decode = lpstream.decode() // create an decode stream to receive data

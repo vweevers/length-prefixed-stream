@@ -1,6 +1,6 @@
 {
-  "name": "length-prefixed-stream",
-  "version": "2.0.0",
+  "name": "@vweevers/length-prefixed-stream",
+  "version": "0.0.0",
   "description": "Streaming length prefixed buffers",
   "main": "index.js",
   "files": [
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mafintosh/length-prefixed-stream"
+    "url": "https://github.com/vweevers/length-prefixed-stream"
   },
   "keywords": [
     "varint",
@@ -36,9 +36,9 @@
   "author": "Mathias Buus",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mafintosh/length-prefixed-stream/issues"
+    "url": "https://github.com/vweevers/length-prefixed-stream/issues"
   },
-  "homepage": "https://github.com/mafintosh/length-prefixed-stream",
+  "homepage": "https://github.com/vweevers/length-prefixed-stream",
   "engines": {
     "node": ">=12"
   }
