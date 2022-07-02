@@ -1,18 +1,19 @@
 var tape = require('tape')
-var through = require('through2')
 var concat = require('concat-stream')
 var from = require('from2')
-var { pipeline, Writable } = require('readable-stream')
+var { pipeline, Writable, Transform } = require('readable-stream')
 var lpstream = require('./')
 
 var chunk = function (ultra) {
-  return through(function (data, enc, cb) {
-    while (data.length) {
-      var chunk = data.slice(0, ultra ? 1 : 1 + ((Math.random() * data.length) | 0))
-      this.push(chunk)
-      data = data.slice(chunk.length)
+  return new Transform({
+    transform (data, enc, cb) {
+      while (data.length) {
+        var chunk = data.slice(0, ultra ? 1 : 1 + ((Math.random() * data.length) | 0))
+        this.push(chunk)
+        data = data.slice(chunk.length)
+      }
+      cb()
     }
-    cb()
   })
 }
 
