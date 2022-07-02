@@ -1,4 +1,4 @@
-var {encode} = require('.')
+var { encode } = require('.')
 
 var encoder = encode()
 encoder.on('data', function (data) {
